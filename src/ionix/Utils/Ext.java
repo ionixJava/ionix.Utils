@@ -118,7 +118,7 @@ public final class Ext {
     }
 
 
-    public int size(Iterable<?> iterable) {
+    public static int size(Iterable<?> iterable) {
         if (iterable instanceof Collection)
             return ((Collection<?>)iterable).size();
 
@@ -129,5 +129,9 @@ public final class Ext {
             count++;
         }
         return count;
+    }
+
+    public static boolean equals(Object objA, Object objB){
+        return objA == objB || (objA != null && objB != null && objA.equals(objB));
     }
 }
