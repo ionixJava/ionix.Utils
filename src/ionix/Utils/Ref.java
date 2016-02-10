@@ -75,16 +75,21 @@ public final class Ref {
         return null != field ? Iterable.class.isAssignableFrom(field.getType()) : false;
     }
 
+    private static <T extends Annotation> T getAnnotation(Annotation[] ann, Class<T> annotationCls){
+        if (null != ann) {
+            for (Annotation item : ann) {
+                T temp = Ext.as(annotationCls, item);
+                if (null != temp)
+                    return temp;
+            }
+        }
+        return null;
+    }
+
     public static <T extends Annotation> T getAnnotation(Class objCls, Class<T> annotationCls){
         if (null != objCls && null !=  annotationCls) {
             Annotation[] ann = objCls.getDeclaredAnnotations();
-            if (null != ann) {
-                for (Annotation item : ann) {
-                    T temp = Ext.as(annotationCls, item);
-                    if (null != temp)
-                        return temp;
-                }
-            }
+            return getAnnotation(ann, annotationCls);
         }
         return null;
     }
@@ -92,13 +97,7 @@ public final class Ref {
     public static <T extends Annotation> T getAnnotation(Field field, Class<T> annotationCls){
         if (null != field && null != annotationCls) {
             Annotation[] ann = field.getDeclaredAnnotations();
-            if (null != ann) {
-                for (Annotation item : ann) {
-                    T temp = Ext.as(annotationCls, item);
-                    if (null != temp)
-                        return temp;
-                }
-            }
+            return getAnnotation(ann, annotationCls);
         }
         return null;
     }

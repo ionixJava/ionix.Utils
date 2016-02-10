@@ -1,6 +1,6 @@
 package ionix.Utils;
 
-public class Locked<T> implements Lockable
+public final class Locked<T> implements Lockable
 {
     private T value;
     private boolean m_isLocked;
@@ -35,6 +35,11 @@ public class Locked<T> implements Lockable
     public void unLock()
     {
         this.m_isLocked = false;
+    }
+
+    @Override
+    public String toString(){
+        return this.value != null ? this.value.toString() : "";
     }
 }
 
