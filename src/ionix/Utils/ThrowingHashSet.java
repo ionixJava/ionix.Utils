@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 
-public class ThrowingHashSet<T> implements Collection<T>// a proxy
+public class ThrowingHashSet<T> implements Collection<T>
 {
     private final Set<T> hash;
 
