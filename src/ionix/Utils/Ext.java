@@ -134,4 +134,20 @@ public final class Ext {
     public static boolean equals(Object objA, Object objB){
         return objA == objB || (objA != null && objB != null && objA.equals(objB));
     }
+
+    public static <T> List toList(Iterable<T> iterable){
+        if (null != iterable){
+            if (iterable instanceof List){
+                return  (List<T>)iterable;
+            }
+            else{
+                ArrayList<T> list = new ArrayList<>();
+                for(T item : iterable){
+                    list.add(item);
+                }
+                return list;
+            }
+        }
+        return Collections.emptyList();
+    }
 }
