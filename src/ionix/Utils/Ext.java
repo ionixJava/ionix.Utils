@@ -2,6 +2,8 @@ package ionix.Utils;
 
 import com.google.gson.Gson;
 import ionix.Conversion.Convert;
+
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -149,5 +151,27 @@ public final class Ext {
             }
         }
         return Collections.emptyList();
+    }
+
+    public static boolean isEmptyArray(Object array){
+        if (null != array){
+            if (!array.getClass().isArray())
+                throw new IllegalArgumentException("parameter 'array' is not instance of an array.");
+            return Array.getLength(array) == 0;
+        }
+        return true;
+    }
+
+    public static <T> Collection<T> toCollection(Class<T> cls, Object array){
+        ArrayList<T> ret = new ArrayList<>();
+        if (null != array){
+            if (!array.getClass().isArray())
+                throw new IllegalArgumentException("parameter 'array' is not instance of an array.");
+
+            Object[] arr = (Object[])array;
+            for(int j = 0; j < arr.length; ++j)
+                ret.add((T)arr[j]);
+        }
+        return ret;
     }
 }
