@@ -19,7 +19,7 @@ public final class Ext {
 
 
     public static <T> T convertTo(Class<T> clazz, Object obj) {
-        return Ext.as(clazz, Convert.changeType(obj, clazz));
+        return Ext.as(clazz, Convert.Instance.changeType(obj, clazz));
     }
 
 

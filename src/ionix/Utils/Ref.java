@@ -21,7 +21,7 @@ public final class Ref {
         }
     }
 
-    public static void copyFieldsSafely(Object source, Object dest) {
+    public static void copyFieldsSafely(Object source, Object dest, Convert convert) {
         if (null != source && null != dest) {
             Class<?> destClass = dest.getClass();
             for (Field sourceField : source.getClass().getDeclaredFields()) {
@@ -31,20 +31,26 @@ public final class Ref {
                     destField.setAccessible(true);
 
                     Object sourceValue = sourceField.get(source);
-                    setValueSafely(destField, dest, sourceValue);
+                    setValueSafely(destField, dest, sourceValue, convert);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         }
     }
+    public static void copyFieldsSafely(Object source, Object dest){
+        copyFieldsSafely(source, dest, Convert.Instance);
+    }
 
-    public static void setValueSafely(Field field, Object obj, Object value) {
+    public static void setValueSafely(Field field, Object obj, Object value, Convert convert) {
         try {
-            field.set(obj, Convert.changeType(value, field.getType()));
+            field.set(obj, convert.changeType(value, field.getType()));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    public static void setValueSafely(Field field, Object obj, Object value){
+        setValueSafely(field, obj, value, Convert.Instance);
     }
 
     public static Object getDefault(Class<?> cls) {
