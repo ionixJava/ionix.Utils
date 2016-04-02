@@ -4,6 +4,7 @@ import sun.misc.BASE64Encoder;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -53,6 +54,11 @@ public class ByteArrayConvertible implements Convertible {
     @Override
     public Date toDate(Object value) {
         throw new UnsupportedOperationException("Byte Array to Date");
+    }
+
+    @Override
+    public Timestamp toTimestamp(Object value) {
+        throw new UnsupportedOperationException("Byte Array to Timestamp");
     }
 
     @Override

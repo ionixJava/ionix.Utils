@@ -1,6 +1,7 @@
 package ionix.Conversion;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -54,6 +55,11 @@ public abstract class NumericConvertible implements Convertible{
     public Date toDate(Object value) {
         long l = cast(value).longValue();
         return new Date(l);
+    }
+
+    @Override
+    public Timestamp toTimestamp(Object value) {
+        throw new UnsupportedOperationException("Numeric to Timestamp");
     }
 
     @Override

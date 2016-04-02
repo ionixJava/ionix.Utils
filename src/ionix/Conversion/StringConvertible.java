@@ -2,6 +2,7 @@ package ionix.Conversion;
 
 import sun.misc.BASE64Decoder;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -84,5 +85,10 @@ public class StringConvertible implements Convertible {
     @Override
     public UUID toUUID(Object value) {
         return UUID.fromString((String)value);
+    }
+
+    @Override
+    public Timestamp toTimestamp(Object value) {
+        return Timestamp.valueOf((String )value);
     }
 }

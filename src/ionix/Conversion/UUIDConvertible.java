@@ -2,6 +2,7 @@ package ionix.Conversion;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -75,5 +76,10 @@ public class UUIDConvertible implements Convertible{
     @Override
     public UUID toUUID(Object value) {
         return (UUID)value;
+    }
+
+    @Override
+    public Timestamp toTimestamp(Object value) {
+        throw new UnsupportedOperationException("Byte Array to Timestamp");
     }
 }

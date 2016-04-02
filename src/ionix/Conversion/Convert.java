@@ -35,6 +35,7 @@ public class Convert {
         converterRepo.put(CachedTypes.Long, new LongConvertible());
         converterRepo.put(CachedTypes.Nullable_Long, new LongConvertible());
         converterRepo.put(CachedTypes.UUID, new UUIDConvertible());
+        converterRepo.put(CachedTypes.Timestamp, new TimestampConvertible());
     }
 
     //template method pattern
@@ -54,6 +55,8 @@ public class Convert {
             return c.toInt(value);
         else if (targetClass == CachedTypes.Date)
             return c.toDate(value);
+        else if (targetClass == CachedTypes.Timestamp)
+            return c.toTimestamp(value);
         else if (targetClass == CachedTypes.Double || targetClass == CachedTypes.Nullable_Double)
             return c.toDouble(value);
         else if (targetClass == CachedTypes.ByteArray)

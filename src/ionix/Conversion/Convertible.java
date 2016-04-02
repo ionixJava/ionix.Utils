@@ -1,6 +1,7 @@
 package ionix.Conversion;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.*;
 
 public interface Convertible {
@@ -30,4 +31,6 @@ public interface Convertible {
     byte[] toByteArray(Object value);
 
     UUID toUUID(Object value);
+
+    Timestamp toTimestamp(Object value);
 }

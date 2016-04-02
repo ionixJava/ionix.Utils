@@ -1,6 +1,7 @@
 package ionix.Conversion;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -74,5 +75,10 @@ public class CharacterConvertible implements Convertible {
     @Override
     public UUID toUUID(Object value) {
         throw new UnsupportedOperationException("Character to UUID");
+    }
+
+    @Override
+    public Timestamp toTimestamp(Object value) {
+        throw new UnsupportedOperationException("Character to Timestamp");
     }
 }
