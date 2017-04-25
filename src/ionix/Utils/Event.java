@@ -4,15 +4,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Delegate<E> implements Iterable<Action<E>> {
+public class Event<E> implements Iterable<Action<E>> {
 
     private final List<Action<E>> list;
 
-    public Delegate(){
+    public Event(){
         this.list = new LinkedList<>();
     }
 
-    public Delegate<E> subscribe(Action<E> action){
+    public Event<E> subscribe(Action<E> action){
         if (null != action)
             this.list.add(action);
         return this;
