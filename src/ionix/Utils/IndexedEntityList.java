@@ -2,20 +2,32 @@ package ionix.Utils;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class IndexedEntityList<TEntity> implements Collection<TEntity>{
 
-    private final HashMap<Key, TEntity> dic;
+    public static <TEntity> IndexedEntityList<TEntity> create(String... fieldNames)
+    {
+        return new IndexedEntityList<>(new HashMap<>(), fieldNames);
+    }
+
+    public static <TEntity> IndexedEntityList createConcurrent(String... fieldNames)
+    {
+        return new IndexedEntityList<TEntity>(new ConcurrentHashMap<>(), fieldNames);
+    }
+
+
+    private final Map<Key, TEntity> map;
     private final String[] fieldNames;
     private final HashSet<Field> fields;
 
-    public IndexedEntityList(String... fieldNames) {
+    private IndexedEntityList(final Map<Key, TEntity> map,  String... fieldNames) {
 
         if (null == fieldNames || 0 == fieldNames.length)
             throw new IllegalArgumentException("fieldNames");
 
-        this.dic = new HashMap<>();
+        this.map = map;
         this.fieldNames = fieldNames;
         this.fields = new HashSet<>(fieldNames.length);
     }
@@ -42,42 +54,42 @@ public class IndexedEntityList<TEntity> implements Collection<TEntity>{
 
     @Override
     public int size() {
-        return this.dic.size();
+        return this.map.size();
     }
 
     @Override
     public boolean isEmpty(){
-        return this.dic.isEmpty();
+        return this.map.isEmpty();
     }
 
     @Override
     public boolean contains(Object obj){
         if (null != obj) {
             Key k = this.getKey((TEntity) obj);
-            return this.dic.containsKey(k);
+            return this.map.containsKey(k);
         }
         return false;
     }
 
     @Override
     public Iterator<TEntity> iterator(){
-        return this.dic.values().iterator();
+        return this.map.values().iterator();
     }
 
     @Override
     public Object[] toArray(){
-        return this.dic.values().toArray();
+        return this.map.values().toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return this.dic.values().toArray(a);
+        return this.map.values().toArray(a);
     }
 
     @Override
     public boolean add(TEntity entity) {
         if (null != entity) {
-            this.dic.put(this.getKey(entity), entity);
+            this.map.put(this.getKey(entity), entity);
             return true;
         }
         return false;
@@ -87,7 +99,7 @@ public class IndexedEntityList<TEntity> implements Collection<TEntity>{
     public boolean remove(Object entity) {
         if (null != entity) {
             Key k = this.getKey((TEntity)entity);
-            return this.dic.remove(k) != null;
+            return this.map.remove(k) != null;
         }
         return false;
     }
@@ -95,7 +107,7 @@ public class IndexedEntityList<TEntity> implements Collection<TEntity>{
     public boolean remove(Object... keyValues) {
         if (keyValues != null && keyValues.length > 0) {
             Key k = new Key(keyValues);
-            return this.dic.remove(k) != null;
+            return this.map.remove(k) != null;
         }
         return false;
     }
@@ -144,7 +156,7 @@ public class IndexedEntityList<TEntity> implements Collection<TEntity>{
     @Override
     public boolean retainAll(Collection<?> c){
         if (null != c){
-            IndexedEntityList<TEntity> retainList = new IndexedEntityList<>();
+            IndexedEntityList<TEntity> retainList = IndexedEntityList.create(this.fieldNames);
             for(Object item : c){
                 if(this.contains(item)) {
                     retainList.add((TEntity)item);
@@ -165,7 +177,7 @@ public class IndexedEntityList<TEntity> implements Collection<TEntity>{
 
     @Override
     public void clear() {
-        this.dic.clear();
+        this.map.clear();
     }
 
 
@@ -174,7 +186,7 @@ public class IndexedEntityList<TEntity> implements Collection<TEntity>{
         if (keyValues != null && keyValues.length > 0)
         {
             Key k = new Key(keyValues);
-            return this.dic.get(k);
+            return this.map.get(k);
         }
         return null;
     }
@@ -183,7 +195,7 @@ public class IndexedEntityList<TEntity> implements Collection<TEntity>{
     private final class Key {
         private final Object[] keys;
 
-        public Key(Collection<Field> keys, TEntity entity) {
+        Key(Collection<Field> keys, TEntity entity) {
             this.keys = new Object[keys.size()];
             int index = 0;
             for (Field field : keys) {
@@ -196,19 +208,27 @@ public class IndexedEntityList<TEntity> implements Collection<TEntity>{
             }
         }
 
-        public Key(Object[] keys) {
+        Key(Object[] keys) {
             this.keys = keys;
         }
 
 
         @Override
         public int hashCode() {
-            int size = this.keys.length;
-            int hash = 0;
-            for (int j = 0; j < size; ++j) {
-                hash ^= this.keys[j].hashCode();
+            int length = this.keys.length;
+            int hash = 17;
+            for (int j = 0; j < length; ++j) {
+                hash = hash * 23 + this.keys[j].hashCode();
             }
             return hash;
+
+
+//            int size = this.keys.length;
+//            int hash = 0;
+//            for (int j = 0; j < size; ++j) {
+//                hash ^= this.keys[j].hashCode();
+//            }
+//            return hash;
         }
 
         @Override
